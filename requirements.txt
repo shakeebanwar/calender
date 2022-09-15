@@ -1,0 +1,26 @@
+Django==2.2
+pytz==2022.1
+sqlparse==0.4.2
+mysqlclient==2.1.1
+
+
+
+
+
+
+
+Features to be added:
+
+1. Add an Update and Edit option for each entry after being submitted. 
+
+2. Add a prompt window for when input End Date entry is earlier than Start Date. Ex: Start Date-September 10 and End Date-September 4. Should show a prompt showing "Error! Try again."
+
+3. Add the Search Bar function for each table (Offset and Calendar). And also the filter function specified for each "Type" in the Calendar Table. 
+
+4. For the Expiring Column. Each time a user inputs "Add Offset", it should be saved in the database with an expiry date. So the hours calculated for each entry should be marked with an expiring timer which is 30 days. Now for the value in the "Expiring" column, it should show the offsethours that will expire the Earliest. After that, the expired offsethours should be subtracted from the User's remaining "Balance" so that he/she may not use it anymore. 
+
+- The user should not be able to "Add Calendar Entry" and input Type: "Offset" if the hours he/she inputs exceeds his/her "Balance" stored in the Offset Tracker database. 
+
+5. The Users in the Offset Table should not be duplicated in a different row each time a new entry is made. Only the values in each user's corresponding row should be updated. 
+
+6. Please correct when the User selects "Leave" for the Type in "Add Calendar Entry", the hours calculated from that should not be counted in the "Total Used" column.

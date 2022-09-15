@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Global SRE Centralized Web App</title>
+        {% load static %}
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{% static 'css/base.css'%}">
+        <link rel="stylesheet" href="{% static 'css/irbot.css'%}">
+        {% block css %}
+
+        {% endblock %}
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+            <!-- Navbar Brand-->
+            <a class="navbar-brand ps-3" href="{% url 'indexapp'%}">GLOBAL SRE</a>
+            <!-- Sidebar Toggle-->
+            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+            <!-- Margin-->
+            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">   
+            </div>
+            <!-- Service Name-->
+            <div class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                <div class="nav-item dropdown">
+                        <a class="navbar-brand ps-3" href="{% url 'tmemsapp'%}">Email Security</a>
+                </div>
+            </div>
+        </nav>
+        <div id="layoutSidenav">
+            <div id="layoutSidenav_nav">
+                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                    <div class="sb-sidenav-menu">
+                        <div class="nav">
+                            <div class="sb-sidenav-menu-heading"></div>
+                            <a class="nav-link" href="{% url 'indexapp'%}">
+                                <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
+                                Home
+                            </a>
+                            <div class="sb-sidenav-menu-heading">Tools</div>
+                            <a class="nav-link collapsed" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-pencil"></i></div>
+                                Deployments
+                            </a>
+                            <a class="nav-link collapsed" href="#">
+                                <div class="sb-nav-link-icon"><i class="fas fa-cube"></i></div>
+                                Roundcube
+                            </a>
+                        </div>
+                    </div>
+                    <div class="sb-sidenav-footer">
+                        <div class="small">Logged in as:</div>
+                        Global SRE
+                    </div>
+                </nav>
+            </div>
+            <div id="layoutSidenav_content">
+                {% block content %}
+
+                {% endblock %}
+                <button type="image" class="open-button" onclick="openForm()" id="irbotbutton"><img src={% static 'img/irbot-logo.png' %} width="80" height="76" /></button>
+                
+                <div class="chat-popup" id="irbotform">
+                    <form action="/action_page.php" class="form-container">
+                    
+                    <iframe src="https://web.powerva.microsoft.com/environments/Default-3e04753a-ae5b-42d4-a86d-d6f05460f9e4/bots/new_bot_1e8a83c7097c47618534dc81afc8dec5/webchat" frameborder="0" style="width: 100%; height: 100%;"></iframe>
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+                    </form>
+                </div>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Global SRE Centralized Web App 2022</div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="{% static 'js/irbot.js' %}"></script>
+        <script src="{% static 'js/base.js' %}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+    </body>
+</html>

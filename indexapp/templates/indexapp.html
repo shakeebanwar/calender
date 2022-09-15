@@ -1,0 +1,11 @@
+{% extends "indexappbase.html" %}
+
+{% block css %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/indexapp.css'%}">
+{% endblock %}
+
+{% block content %}
+<iframe title="Dashboard - Prod v1.1" width="1140" height="541.25" src="https://app.powerbi.com/reportEmbed?reportId=e9780aa2-21fd-4afd-ac12-557fb75d9296&autoAuth=true&ctid=3e04753a-ae5b-42d4-a86d-d6f05460f9e4&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXdlc3QtdXMtYy1wcmltYXJ5LXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9" frameborder="0" allowFullScreen="true"></iframe>
+{% endblock %}
+    
