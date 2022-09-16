@@ -172,7 +172,7 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button type="submit" namne="cal-save" class="btn btn-primary" id="calendar-save">Save</button>
+          <button id = "calenderbtn" disabled type="submit" namne="cal-save" class="btn btn-primary" id="calendar-save">Save</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </form>
@@ -263,8 +263,8 @@
 
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      <button type="submit" class="btn btn-primary">Save changes</button>
+      <button   type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button id = "editcalenderbtn" type="submit" class="btn btn-primary">Save changes</button>
     </div>
   </div>
 </div>
@@ -313,7 +313,7 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button type="submit" name="off-save" class="btn btn-primary">Save</button>
+          <button type="submit" id="offsetsubmition" disabled name="off-save" class="btn btn-primary">Save</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
       </form>
@@ -385,8 +385,8 @@
 
 
     <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      <button type="submit" class="btn btn-primary">Save changes</button>
+      <button type="button"  class="btn btn-secondary" data-dismiss="modal">Close</button>
+      <button type="submit" id="editoffset" disabled class="btn btn-primary">Save changes</button>
     </div>
   </div>
 </div>
@@ -589,6 +589,8 @@
 
   function editOffset(a, b, c) {
 
+
+    
     let checkbox = document.getElementById('userid')
     checkbox.value = a
 
@@ -598,6 +600,7 @@
 
     let enddate = document.getElementById('editid_end_date')
     enddate.value = c
+    editoffsetData()
 
 
 
@@ -615,7 +618,6 @@ function editCalender(a,b,c,d,e,f){
   let type = document.getElementById('calendereditcalendersre')
   let calenderid = document.getElementById('calenderidvalue')
 
-  console.log("calenderid",calenderid)
 
 
 
@@ -626,10 +628,147 @@ function editCalender(a,b,c,d,e,f){
   desc.value = d
   type.value = e
   calenderid.value = f
+  editCal()
 
 
 
 }
+
+
+//Add Date validation
+
+let endoffset = document.getElementById('id_offset_end')
+let startoffdate = document.getElementById('id_offset_start')
+let btndis = document.getElementById('offsetsubmition')
+
+
+let calstartoffdate = document.getElementById('id_start_date')
+let calendoffset = document.getElementById('id_end_date')
+let calbtndis = document.getElementById('calenderbtn')
+
+
+//Edit Date Validation
+
+
+let Editendoffset = document.getElementById('editid_start_date')
+let Editstartoffdate = document.getElementById('editid_end_date')
+let Editbtndis = document.getElementById('editoffset')
+
+
+
+let calEditendoffset = document.getElementById('calender_start_date')
+let calEditstartoffdate = document.getElementById('calender_end_date')
+let calEditbtndis = document.getElementById('editcalenderbtn')
+
+
+
+
+
+endoffset.addEventListener("change", function() {
+
+
+  if(startoffdate.value < endoffset.value){
+
+      btndis.disabled = false
+
+  }
+
+  else{
+
+
+    btndis.disabled = true
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Enddate should be greater than startdate',
+    })
+
+  } 
+});
+
+
+
+function editoffsetData() {
+
+
+if(Editendoffset.value < Editstartoffdate.value){
+
+  Editbtndis.disabled = false
+
+}
+
+else{
+
+
+  Editbtndis.disabled = true
+  Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Enddate should be greater than startdate',
+    })
+
+} 
+}
+
+
+function editCal(){
+
+
+
+  if(calEditendoffset.value < calEditstartoffdate.value){
+
+
+    calEditbtndis.disabled = false
+
+}
+
+else{
+
+  calEditbtndis.disabled =  true
+  Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Enddate should be greater than startdate',
+    })
+
+
+
+}
+}
+
+calEditstartoffdate.addEventListener("change",editCal );
+Editstartoffdate.addEventListener("change",editoffsetData );
+
+
+
+
+
+
+
+
+calendoffset.addEventListener("change", function() {
+
+
+if(calstartoffdate.value < calendoffset.value){
+
+  calbtndis.disabled = false
+
+}
+
+else{
+
+
+  calbtndis.disabled = true
+  Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Enddate should be greater than startdate',
+    })
+
+} 
+});
+
+
 </script>
 <!-- end -->
 

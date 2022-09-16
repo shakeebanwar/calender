@@ -40,8 +40,17 @@ def srecalendarapp(request):
             ## check  if not exist
             checkalready = offset.objects.filter(sre = Sre).first()
             if not checkalready:
+                startdate = datetime.strptime(str(offset_start)[:19], '%Y-%m-%dT%H:%M')
+                enddate = datetime.strptime(str(offset_end)[:19], '%Y-%m-%dT%H:%M')
+
+                timedelta = enddate - startdate
+                expiration = timedelta.total_seconds() / 3600
+                hours = int(expiration)
+                offset_used = 0
+                balance = int(expiration) - int(offset_used)
+
                 fetchsre = sre.objects.get(sre_id = Sre)
-                off_form = offset(sre=fetchsre,offset_start=offset_start,offset_end=offset_end)                      
+                off_form = offset(sre=fetchsre,offset_start=offset_start,offset_end=offset_end,offset_total = hours , offset_expiring = timedelta,offset_bal = balance)                      
                 off_form.save()
                 return redirect('srecalendarapp')
 
@@ -71,8 +80,8 @@ def srecalendarapp(request):
 
             startdate = datetime.strptime(str(start_date)[:19], '%Y-%m-%dT%H:%M')
             enddate = datetime.strptime(str(end_date)[:19], '%Y-%m-%dT%H:%M')
-            timedelta = enddate - startdate
-            timedelta = timedelta.total_seconds() / 3600
+            expiration = enddate - startdate
+            timedelta = expiration.total_seconds() / 3600
             fetchoffset = offset.objects.filter(sre =Sre ).first()
             if fetchoffset:
                 
@@ -80,11 +89,26 @@ def srecalendarapp(request):
                 ##edit work
                 if calenderid:
                     fetchdata = calendar_list.objects.get(calendar_id = calenderid)
+                    ##Extra hourse subtract
+                    editstartdate = datetime.strptime(str(fetchdata.start_date)[:19], '%Y-%m-%d %H:%M:%S')
+                    editenddate = datetime.strptime(str(fetchdata.end_date)[:19], '%Y-%m-%d %H:%M:%S')
+                    editexpiration = editenddate - editstartdate
+                    edittimedelta = editexpiration.total_seconds() / 3600
+                    print("edittimedelta",edittimedelta)
+
+
+
                     fetchdata.start_date = start_date
                     fetchdata.end_date = end_date
                     fetchdata.description = description
                     fetchdata.type = typeobj
+                    fetchdata.offset_expiring = expiration
+                    fetchdata.offset_total = timedelta
+                    fetchoffset.offset_used = timedelta + edittimedelta -edittimedelta
+                    fetchoffset.offset_bal = fetchoffset.offset_bal - timedelta
                     fetchdata.save()
+                    fetchoffset.save()
+                    
                     return redirect('srecalendarapp')
 
 
@@ -92,9 +116,10 @@ def srecalendarapp(request):
                 obj.save()
 
                 ##cut hours
-                
-                fetchoffset.offset_used = fetchoffset.offset_used + timedelta
-                fetchoffset.save()
+                if typeobj.name != "Leave":
+                    fetchoffset.offset_used = fetchoffset.offset_used + timedelta
+                    fetchoffset.offset_bal = fetchoffset.offset_bal - timedelta
+                    fetchoffset.save()
                 return redirect('srecalendarapp')
 
             else:
