@@ -55,17 +55,32 @@ def srecalendarapp(request):
                 return redirect('srecalendarapp')
 
             else:
-                status = True
+                print("else is hitting")
+                # return HttpResponse("OK")
+                               
+                timedelta = enddate - startdate
+                expiration = timedelta.total_seconds() / 3600
+                hours = int(expiration)
+                balance = int(expiration) - int(checkalready.offset_used)
+                # print("expiration",expiration)
+                # print("hours",hours)
+                # print("balance",balance)
+
+                # return HttpResponse("okay")
+                status = False
                 checkalready.offset_start = offset_start
                 checkalready.offset_end = offset_end
+                checkalready.offset_total = hours
+                checkalready.offset_expiring = timedelta
+                checkalready.offset_bal = balance
                 checkalready.save()
                 if 'statusmessage' in request.POST:
                     return redirect('srecalendarapp')
 
-
-                context = {'cal_form' : calendarform, "calendar": all_events , "list_type": list_type.objects.values("name") , 'off_form' : offsetForm,"offsetdata":offsetdata,'sredata':sredata,"status":status,"message":"User already exists"}
+                return redirect('srecalendarapp')
+                # context = {'cal_form' : calendarform, "calendar": all_events , "list_type": list_type.objects.values("name") , 'off_form' : offsetForm,"offsetdata":offsetdata,'sredata':sredata,"status":status,"message":"User already exists"}
                 
-                return render(request, "srecalendarapp.html", context)
+                # return render(request, "srecalendarapp.html", context)
 
         
         else:
@@ -94,7 +109,6 @@ def srecalendarapp(request):
                     editenddate = datetime.strptime(str(fetchdata.end_date)[:19], '%Y-%m-%d %H:%M:%S')
                     editexpiration = editenddate - editstartdate
                     edittimedelta = editexpiration.total_seconds() / 3600
-                    print("edittimedelta",edittimedelta)
 
 
 
