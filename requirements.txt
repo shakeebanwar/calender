@@ -24,3 +24,28 @@ Features to be added:
 5. The Users in the Offset Table should not be duplicated in a different row each time a new entry is made. Only the values in each user's corresponding row should be updated. 
 
 6. Please correct when the User selects "Leave" for the Type in "Add Calendar Entry", the hours calculated from that should not be counted in the "Total Used" column.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -22,7 +22,7 @@ class offset(models.Model):
     offset_end = models.DateTimeField(blank=True, null=True)
     offset_total = models.FloatField(blank=True, null=True)
     offset_used = models.FloatField(blank=True, null=True,default=0)
-    offset_expiring = models.CharField(max_length=255,blank=True, null=True)
+    offset_expiring =  models.DateTimeField(blank=True, null=True)
     offset_bal = models.FloatField(blank=True, null=True)
     sre = models.ForeignKey(sre,on_delete=models.CASCADE,blank=True,null=True)
 

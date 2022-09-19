@@ -7,18 +7,23 @@ from .models import *
 from django.http import HttpResponse
 from django.db.models import F
 from datetime import datetime
+import srecalendarapp.usable as uf
 
 
 def srecalendarapp(request):
     offsetdata = offset.objects.all().values('offset_id','sre','offset_start','offset_end','offset_used','offset_expiring',name = F('sre__first_name'))
     for j in offsetdata:
+        
 
-        j['remaing'] = j['offset_end'] - j['offset_start']
+        
+        todayobj = datetime.strptime(str(datetime.now() )[:19], '%Y-%m-%d %H:%M:%S')
+        expireCal = datetime.strptime(str(j['offset_expiring'])[:19], '%Y-%m-%d %H:%M:%S')
         startdate = datetime.strptime(str(j['offset_start'])[:19], '%Y-%m-%d %H:%M:%S')
         enddate = datetime.strptime(str(j['offset_end'])[:19], '%Y-%m-%d %H:%M:%S')
 
         timedelta = enddate - startdate
         timedelta = timedelta.total_seconds() / 3600
+        j['remaing'] = expireCal - todayobj
         j['hours'] = int(timedelta)
         j['offset_used'] = int(j['offset_used'])
         j['balance'] = int(timedelta) - int(j['offset_used'])
@@ -42,15 +47,15 @@ def srecalendarapp(request):
             if not checkalready:
                 startdate = datetime.strptime(str(offset_start)[:19], '%Y-%m-%dT%H:%M')
                 enddate = datetime.strptime(str(offset_end)[:19], '%Y-%m-%dT%H:%M')
-
-                timedelta = enddate - startdate
-                expiration = timedelta.total_seconds() / 3600
+                timedeltas = enddate - startdate
+                expiration = timedeltas.total_seconds() / 3600
                 hours = int(expiration)
                 offset_used = 0
                 balance = int(expiration) - int(offset_used)
-
+                expirationDays = uf.expireCalculate()
+                
                 fetchsre = sre.objects.get(sre_id = Sre)
-                off_form = offset(sre=fetchsre,offset_start=offset_start,offset_end=offset_end,offset_total = hours , offset_expiring = timedelta,offset_bal = balance)                      
+                off_form = offset(sre=fetchsre,offset_start=offset_start,offset_end=offset_end,offset_total = hours , offset_expiring = expirationDays,offset_bal = balance)                      
                 off_form.save()
                 return redirect('srecalendarapp')
 
@@ -98,7 +103,8 @@ def srecalendarapp(request):
             expiration = enddate - startdate
             timedelta = expiration.total_seconds() / 3600
             fetchoffset = offset.objects.filter(sre =Sre ).first()
-            if fetchoffset:
+
+            if typeobj.name != "Offset" or fetchoffset:
                 
 
                 ##edit work
@@ -130,7 +136,7 @@ def srecalendarapp(request):
                 obj.save()
 
                 ##cut hours
-                if typeobj.name != "Leave":
+                if typeobj.name == "Offset":
                     fetchoffset.offset_used = fetchoffset.offset_used + timedelta
                     fetchoffset.offset_bal = fetchoffset.offset_bal - timedelta
                     fetchoffset.save()
