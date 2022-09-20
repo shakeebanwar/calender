@@ -67,18 +67,15 @@ def srecalendarapp(request):
                 expiration = timedelta.total_seconds() / 3600
                 hours = int(expiration)
                 balance = int(expiration) - int(checkalready.offset_used)
-                # print("expiration",expiration)
-                # print("hours",hours)
-                # print("balance",balance)
 
-                # return HttpResponse("okay")
                 status = False
                 checkalready.offset_start = offset_start
                 checkalready.offset_end = offset_end
                 checkalready.offset_total = hours
-                checkalready.offset_expiring = timedelta
+                # checkalready.offset_expiring = timedelta
                 checkalready.offset_bal = balance
                 checkalready.save()
+                # return HttpResponse("OK")
                 if 'statusmessage' in request.POST:
                     return redirect('srecalendarapp')
 
